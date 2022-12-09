@@ -1,17 +1,4 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.1.0
-=========================================================
 
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
 
 import { useMemo, useEffect, useState } from "react";
 
@@ -277,33 +264,33 @@ DataTable.defaultProps = {
   noEndBorder: false,
 };
 
-// Typechecking props for the DataTable
-DataTable.propTypes = {
-  entriesPerPage: PropTypes.oneOfType([
-    PropTypes.shape({
-      defaultValue: PropTypes.number,
-      entries: PropTypes.arrayOf(PropTypes.number),
-    }),
-    PropTypes.bool,
-  ]),
-  canSearch: PropTypes.bool,
-  showTotalEntries: PropTypes.bool,
-  table: PropTypes.objectOf(PropTypes.array).isRequired,
-  pagination: PropTypes.shape({
-    variant: PropTypes.oneOf(["contained", "gradient"]),
-    color: PropTypes.oneOf([
-      "primary",
-      "secondary",
-      "info",
-      "success",
-      "warning",
-      "error",
-      "dark",
-      "light",
-    ]),
-  }),
-  isSorted: PropTypes.bool,
-  noEndBorder: PropTypes.bool,
-};
+// // Typechecking props for the DataTable
+// DataTable.propTypes = {
+//   entriesPerPage: PropTypes.oneOfType([
+//     PropTypes.shape({
+//       defaultValue: PropTypes.number,
+//       entries: PropTypes.arrayOf(PropTypes.number),
+//     }),
+//     PropTypes.bool,
+//   ]),
+//   canSearch: PropTypes.bool,
+//   showTotalEntries: PropTypes.bool,
+//   table: PropTypes.objectOf(PropTypes.array).isRequired,
+//   pagination: PropTypes.shape({
+//     variant: PropTypes.oneOf(["contained", "gradient"]),
+//     color: PropTypes.oneOf([
+//       "primary",
+//       "secondary",
+//       "info",
+//       "success",
+//       "warning",
+//       "error",
+//       "dark",
+//       "light",
+//     ]),
+//   }),
+//   isSorted: PropTypes.bool,
+//   noEndBorder: PropTypes.bool,
+// };
 
 export default DataTable;

@@ -1,17 +1,4 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.1.0
-=========================================================
 
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
 
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
@@ -94,12 +81,6 @@ DataTableHeadCell.defaultProps = {
   align: "left",
 };
 
-// Typechecking props for the DataTableHeadCell
-DataTableHeadCell.propTypes = {
-  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  children: PropTypes.node.isRequired,
-  sorted: PropTypes.oneOf([false, "none", "asce", "desc"]),
-  align: PropTypes.oneOf(["left", "right", "center"]),
-};
+
 
 export default DataTableHeadCell;

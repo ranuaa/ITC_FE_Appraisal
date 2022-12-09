@@ -1,18 +1,3 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import { useState } from "react";
 
 // react-router-dom components
@@ -46,6 +31,8 @@ import { loginStart, loginFailed, loginSuccess } from '../../../Redux/userSlice'
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { ToastContainer } from "react-toastify";
+import instance from "context/axios";
+import baseURL from "context/axios";
 
 function Basic() {
   const [rememberMe, setRememberMe] = useState(false);
@@ -59,7 +46,7 @@ function Basic() {
     dispatch(loginStart())
     e.preventDefault()
     try {
-      const res = await axios.post('http://localhost:5000/auth/login', {email,password})
+      const res = await axios.post(`${baseURL}api/auth/login`, {email,password})
       dispatch(loginSuccess(res.data.data))
       navigate('/dashboard')
     } catch (error) {

@@ -1,17 +1,4 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.1.0
-=========================================================
 
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
 
 import { useState, useEffect } from "react";
 
@@ -35,14 +22,13 @@ import MDAvatar from "components/MDAvatar";
 import breakpoints from "assets/theme/base/breakpoints";
 
 // Images
-import burceMars from "assets/images/bruce-mars.jpg";
 import backgroundImage from "assets/images/bg-profile.jpeg";
 import avatar from '../../../../assets/avatar.png'
+import baseURL from "context/axios";
 
 function Header({ children, user, currentUser }) {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
   const [tabValue, setTabValue] = useState(0);
-  console.log(user);
   
   useEffect(() => {
     // A function that sets the orientation state of the tabs.
@@ -96,16 +82,18 @@ function Header({ children, user, currentUser }) {
       >
         <Grid container spacing={3} alignItems="center">
           <Grid item>
-            {user ? <MDAvatar src={user.photoProfile ? `http://localhost:5000/${user.photoProfile}` : avatar} alt="profile-image" size="xl" shadow="sm" /> : <MDAvatar src={currentUser.photoProfile ? `http://localhost:5000/${currentUser.photoProfile}` : avatar} alt="profile-image" size="xl" shadow="sm" />}
+            {user ? <MDAvatar src={user.profilePicture ? `${baseURL}/${user.profilePicture}` : avatar} alt="profile-image" size="xl" shadow="sm" /> : <MDAvatar src={currentUser.profilePicture ? `${baseURL}/${currentUser.profilePicture}` : avatar} alt="profile-image" size="xl" shadow="sm" />}
           </Grid>
           <Grid item>
             <MDBox height="100%" mt={0.5} lineHeight={1}>
               <MDTypography variant="h5" fontWeight="medium">
                 {user ? user.fullName : currentUser.fullName}
               </MDTypography>
-              <MDTypography variant="button" color="text" fontWeight="regular">
-                CEO / Co-Founder
-              </MDTypography>
+              {user ? <MDTypography variant="button" color="text" fontWeight="regular">
+                {user.careerHistory.length !=0 ? user.careerHistory[user.careerHistory.length - 1].career : "-" }
+              </MDTypography> : <MDTypography variant="button" color="text" fontWeight="regular">
+                {currentUser.careerHistory.length !=0 ? currentUser.careerHistory[currentUser.careerHistory.length - 1].career : "-" }
+              </MDTypography> }
             </MDBox>
           </Grid>
           <Grid item xs={12} md={6} lg={4} sx={{ ml: "auto" }}>

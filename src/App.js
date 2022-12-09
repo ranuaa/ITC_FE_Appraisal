@@ -103,7 +103,7 @@ export default function App() {
 
   //Redux User State
   const { currentUser } = useSelector((state) => state.user);
-
+  const non = [routes[0], routes[5]]
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {
       if (route.collapse) {
@@ -152,7 +152,7 @@ export default function App() {
               color={sidenavColor}
               brand={(transparentSidenav && !darkMode) || whiteSidenav ? logo : logo}
               brandName="ITC FInance"
-              routes={routes}
+              routes={ currentUser.isAdmin ? routes : non}
               onMouseEnter={handleOnMouseEnter}
               onMouseLeave={handleOnMouseLeave}
             />
@@ -171,7 +171,6 @@ export default function App() {
           />
           <Route path="/authentication/sign-in" element={<SignIn />} />
           <Route path="/authentication/sign-up" element={<SignUp />} />
-          {/* <Route path="/" element={ currentUser  ?  <Navigate to="/dashboard" /> : <Navigate to="/authentication/sign-in" />} /> */}
         </Routes>
       </ThemeProvider>
     </CacheProvider>
@@ -184,7 +183,7 @@ export default function App() {
             color={sidenavColor}
             brand={(transparentSidenav && !darkMode) || whiteSidenav ? logo : logo}
             brandName="ITC FInance"
-            routes={routes}
+            routes={currentUser?.isAdmin ? routes : non}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
           />

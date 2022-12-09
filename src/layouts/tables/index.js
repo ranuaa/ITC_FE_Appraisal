@@ -1,54 +1,60 @@
-// @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
-
-// Material Dashboard 2 React components
+import moment from 'moment'
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
-
-// Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import DataTable from "examples/Tables/DataTable";
 import avatar from '../../assets/avatar.png'
-// Data
-// import employeesTableData from "layouts/tables/data/employeesTableData";
-// import projectsTableData from "layouts/tables/data/projectsTableData";
 import { Author, Job } from './data/employeesTableData'
 import MDBadge from "components/MDBadge";
-import team2 from "assets/images/team-2.jpg";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import baseURL from "context/axios";
 
 function Tables() {
-  // const { columns, rows } = employeesTableData();
-  // const { columns: pColumns, rows: pRows } = projectsTableData();
-
   const {currentUser} = useSelector((state) => state.user)
   const [users,setUsers] = useState([])
-
-
-
-  
+  const [temp,setTemp] = useState([])
   const fetchUsers = async() => {
     try {
-      const res = await axios.get('http://localhost:5000/user', {
-        headers: {
-          'auth' : `Bearer ${currentUser.token}`
-        }
-      })
-      setUsers(res.data)
-      
+      if(currentUser.fullName === 'Super Admin'){
+        const res = await axios.get(`${baseURL}api/user`, {
+          headers: {
+            'auth' : `Bearer ${currentUser.token}`
+          }
+        })
+        setUsers(res.data)
+      }else {
+        const res = await axios.get(`${baseURL}api/user/${currentUser._id}`, {
+          headers: {
+            'auth' : `Bearer ${currentUser.token}`
+          }
+        })
+        let a = res.data.downline
+        let b  = []
+        a?.map(async(dat) => {
+          const res = await axios.get(`${baseURL}api/user/${dat._id}`, {
+            headers: {
+              'auth' : `Bearer ${currentUser.token}`
+            }
+          })
+          setUsers((prev) => [...prev, res.data])
+        // b.push(res.data)
+        
+        })
+      }
     } catch (error) {
       console.log(error)
     }
   }
-
   useEffect(() => {
     fetchUsers()
   }, [])
+
   
   const columns = [
           { Header: "Name", accessor: "Name", width: "45%", align: "left" },
@@ -59,12 +65,30 @@ function Tables() {
   ];
 
   const rows = users?.map((user) => {
+    const data = user.dataAbsensi
+    const today = data.map((dat) => {
+      if(dat.date === moment(new Date()).format("DD-MM-YYYY")){
+        return true
+      }else{
+        return false
+      }
+    })
+    const appraisal = user.appraisal
+    const lastdata = appraisal.map((dat) => {
+      if(moment(dat.date).format("MM-YYYY") === moment().format("MM-YYYY")){
+        return true
+      }else{
+        return false
+      }
+    })
     return     {
-      Name: <Author image={user.photoProfile ? `http://localhost:5000/${user.photoProfile}` : avatar} name={user.fullName} email={user.email} />,
-      function: <Job title="Manager" />,
+      Name: <Author image={user?.profilePicture ? `${baseURL}/${user.profilePicture}` : avatar} name={user.fullName} email={user.email} />,
+      function: (
+      <Job title={user?.careerHistory.length !=0 ? user.careerHistory[user.careerHistory.length - 1].career : "-"} />
+      ),
       status: (
         <MDBox ml={-1}>
-          <MDBadge badgeContent="online" color="success" variant="gradient" size="sm" />
+          <MDBadge badgeContent={today[0] === true ? 'Online' : 'offline'} color={today[0] === true ? "success" : 'error'} variant="gradient" size="sm" />
         </MDBox>
       ),
       employed: (
@@ -82,27 +106,7 @@ function Tables() {
     }
   })
 
-  const row =[
-    users && users.map((user) => {
-      return {  Name: <Author image={team2} name={user?.fullName} email="john@creative-tim.com" />,
-      function: <Job title="Manager" />,
-      status: (
-        <MDBox ml={-1}>
-          <MDBadge badgeContent="online" color="success" variant="gradient" size="sm" />
-        </MDBox>
-      ),
-      employed: (
-        <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-          A
-        </MDTypography>
-      ),
-      action: (
-        <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium"  >
-          Edit
-        </MDTypography>
-      ),}
-    })
-  ]
+ 
 
 
   return (
@@ -123,7 +127,7 @@ function Tables() {
                 coloredShadow="info"
               >
                 <MDTypography variant="h6" color="white">
-                  Employee Table
+                  {users.length > 0 ?  'Employee Table' : 'You dont have Downline'}
                 </MDTypography>
               </MDBox>
               <MDBox pt={3}>

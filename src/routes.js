@@ -68,10 +68,10 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Billing",
-    key: "billing",
+    name: "Appraisal Master",
+    key: "appraisalMaster",
     icon: <Icon fontSize="small">receipt_long</Icon>,
-    route: "/billing",
+    route: "/appraisalMaster",
     component: <RequireAuth> <Billing /> </RequireAuth>,
   },
   {
